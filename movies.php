@@ -1,6 +1,17 @@
 <?php
 include('config.php');
 include('ui/navbar.php');
+
+if (isset($_SESSION['userID'])) {
+    $userID = $_SESSION['userID'];
+    $sql = "SELECT * FROM user WHERE id = $userID";
+    $result = mysqli_query($conn, $sql);
+    $rows = mysqli_fetch_assoc($result);
+}
+
+$sql = "SELECT * FROM movies";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +34,7 @@ include('ui/navbar.php');
 
         .footer {
             background-color: #f8f8f8;
-           
+
             text-align: center;
         }
     </style>
@@ -34,44 +45,25 @@ include('ui/navbar.php');
     <div class="container mx-auto pt-20">
         <h1 class="text-3xl font-bold mb-4">Disney Movies</h1>
         <!-- Add this button in the Movie and Character cards -->
-        <button class="bg-blue-500 text-white font-bold py-2 mb-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="addToFavorites('${movie.Title}', '${movie.Description}', '${movie.PosterURL}')">Add to Favorites</button>
-
+        <?php if (isset($userID) && $rows['type'] == 'user') { ?>
+            <button class="bg-blue-500 text-white font-bold py-2 mb-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="addToFavorites('${movie.Title}', '${movie.Description}', '${movie.PosterURL}')">Add to Favorites</button>
+        <?php } ?>
 
         <div id="moviesList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <!-- Movie Cards will be displayed here -->
-        </div>
-    </div>
-
-    <script>
-        // Fetch movies data from backend and display them
-        $(document).ready(function() {
-            $.ajax({
-                type: "GET",
-                url: "get_movies.php", // Set your backend endpoint here
-                dataType: "json",
-                success: function(data) {
-                    displayMovies(data);
-                }
-            });
-        });
-
-        function displayMovies(movies) {
-            var moviesList = $("#moviesList");
-
-            movies.forEach(function(movie) {
-                var movieCard = `
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <img src="${movie.PosterURL}" alt="${movie.Title}" class="w-full h-48 object-cover mb-4 rounded">
-                        <h3 class="text-xl font-bold mb-2">${movie.Title}</h3>
-                        <p class="text-gray-700">${movie.Description}</p>
-                        <a href="#" class="mt-4 inline-block text-blue-500">Learn More</a>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+                <a href="detail_movie.php?movie_id=<?php echo $row['id'] ?>" class="movie-card shadow-md mb-2">
+                    <img src="image/<?php echo $row['PosterURL'] ?>" alt="Movie Poster" class="w-full">
+                    <div class="movie-info p-4">
+                        <h2 class="text-2xl font-bold"><?php echo $row['Title'] ?></h2>
+                        <p class="text-gray-500"><?php echo $row['Genre'] ?> : <?php echo $row['Director'] ?></p>
+                        <p class="text-gray-500"><?php echo $row['ReleaseDate'] ?></p>
                     </div>
-                `;
+                </a>
+            <?php } ?>
+        </div>
 
-                moviesList.append(movieCard);
-            });
-        }
-    </script>
+    </div>
     <!-- Footer -->
     <div class="footer">
         <?php include('ui/footer.php') ?>

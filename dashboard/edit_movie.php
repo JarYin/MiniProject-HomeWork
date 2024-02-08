@@ -2,9 +2,27 @@
 include('../config.php');
 include('navbar.php');
 
-$sql = "SELECT * FROM movies";
+$sql = "SELECT * FROM movies WHERE id = " . $_GET['edit_id'];
 $result = mysqli_query($conn, $sql);
-$movies = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+if ($result) {
+    // Check if there are any rows returned by the query
+    if (mysqli_num_rows($result) > 0) {
+        // Fetch all rows from the result set as an associative array
+        $movies = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        // Process the fetched data
+        // For example, you can access movie details like $movies[0]['title'], $movies[0]['release_date'], etc.
+    } else {
+        echo "No movie found for the given ID";
+    }
+} else {
+    // Handle query execution error
+    echo "Error: " . mysqli_error($conn);
+}
+
+// Remember to free the result set
+mysqli_free_result($result);
+
 ?>
 
 
@@ -67,19 +85,25 @@ $movies = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         echo "<p class='text-green-500'>" . $_SESSION['message_movie_upload'] . "</p>";
                         unset($_SESSION['message_movie_upload']);
                     } ?>
-                    <form action="dashboardDB.php" method="post" enctype="multipart/form-data">
-                        <label>Title</label>
-                        <input type="text" name="title" id="title" class="w-full border p-2 mb-4" placeholder="Movie Title">
-                        <label>Release Date</label>
-                        <input type="date" name="release" id="release" class="w-full border p-2 mb-4">
-                        <label>Genre</label>
-                        <input type="text" name="genre" id="genre" class="w-full border p-2 mb-4" placeholder="Movie Genre">
-                        <label>Director</label>
-                        <input type="text" name="director" id="director" class="w-full border p-2 mb-4" placeholder="Movie Director">
-                        <label>Poster</label>
-                        <input type="file" name="poster" id="poster" class="w-full border p-2 mb-4">
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" name="submitMovie">Upload</button>
-                    </form>
+                    <?php
+                    // Loop through todo items and display them
+                    foreach ($movies as $movie) { ?>
+                        <form action="dashboardDB.php" method="post" enctype="multipart/form-data">
+                            <label>Title</label>
+                            <input type="text" name="title" id="title" class="w-full border p-2 mb-4" placeholder="Movie Title" value="<?php echo $movie['Title']; ?>">
+                            <label>Release Date</label>
+                            <input type="date" name="release" id="release" class="w-full border p-2 mb-4" value="<?php echo $movie['ReleaseDate']; ?>">
+                            <label>Genre</label>
+                            <input type="text" name="genre" id="genre" class="w-full border p-2 mb-4" placeholder="Movie Genre" value="<?php echo $movie['Genre']; ?>">
+                            <label>Director</label>
+                            <input type="text" name="director" id="director" class="w-full border p-2 mb-4" placeholder="Movie Director" value="<?php echo $movie['Director']; ?>">
+                            <label>Poster</label>
+                            <input type="file" name="poster" id="poster" class="w-full border p-2 mb-4" onchange="showImage(event)">
+                            <img id="previewImage" src="" alt="Preview" class="hidden w-full mb-4">
+                            <input type="hidden" name="movie_id" value="<?php echo $movie['id']; ?>">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" name="EditMovie">Upload</button>
+                        </form>
+                    <?php } ?>
                 </div>
                 <div class="box p-4" style="overflow: auto;">
                     <!-- Second box content -->
@@ -90,7 +114,7 @@ $movies = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         foreach ($movies as $movie) { ?>
                             <li class='shadow-md p-4 mb-2' style='list-style: none;'>
                                 <h3><?php echo $movie['Title'] ?></h3>
-                                <p class="text-gray-500 dark:text-gray-400"><?php echo $movie['Genre']?></p>
+                                <p class="text-gray-500 dark:text-gray-400"><?php echo $movie['Genre'] ?></p>
                                 <p class="text-gray-500 dark:text-gray-400">วันที่ออกฉาย <?php echo $movie['ReleaseDate'] ?></p>
                                 <a href="edit_movie.php?edit_id=<?php echo $movie['id']; ?>" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">Edit</a>
                                 <a href="dashboardDB.php?delete_id=<?php echo $movie['id']; ?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-1 rounded">Delete</a>
@@ -109,3 +133,17 @@ $movies = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </body>
 
 </html>
+
+<script>
+    function showImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function() {
+            var dataURL = reader.result;
+            var img = document.getElementById('previewImage');
+            img.src = dataURL;
+            img.classList.remove('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>

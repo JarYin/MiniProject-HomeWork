@@ -23,28 +23,28 @@ if (isset($_SESSION['userID'])) {
     <nav class="bg-blue-500 p-4 w-full fixed z-20">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
-            <a href="index.php" class="text-white text-2xl font-bold">Disney Movies</a>
+            <a href="../index.php" class="text-white text-2xl font-bold">Disney Movies</a>
 
             <!-- Navigation Links -->
             <div class="hidden md:flex space-x-4">
-                <a href="movies.php" class="text-white hover:text-gray-300">Movies</a>
-                <a href="reviews.php" class="text-white hover:text-gray-300">Reviews</a>
-                <a href="favorites.php" class="text-white hover:text-gray-300">Favorites</a>
+                <a href="../movies.php" class="text-white hover:text-gray-300">Movies</a>
+                <a href="../reviews.php" class="text-white hover:text-gray-300">Reviews</a>
+                <a href="../favorites.php" class="text-white hover:text-gray-300">Favorites</a>
                 <?php if (isset($userID) && $row['type'] == 'admin') { ?>
-                    <a href="dashboard.php" class="text-white hover:text-gray-300">Dashboard</a>
+                    <a href="../dashboard.php" class="text-white hover:text-gray-300">Dashboard</a>
                 <?php } ?>
             </div>
 
             <!-- User Authentication -->
             <?php if (isset($_SESSION['userID'])) { ?>
                 <div class="hidden md:flex space-x-4">
-                    <a href="profile.php" class="text-white hover:text-gray-300"><?php echo $username ?></a>
-                    <a href="logout.php" class="text-white hover:text-red-600">Logout</a>
+                    <a href="../profile.php" class="text-white hover:text-gray-300"><?php echo $username ?></a>
+                    <a href="../logout.php" class="text-white hover:text-red-600">Logout</a>
                 </div>
             <?php } else { ?>
                 <div class="hidden md:flex space-x-4">
-                    <a href="login.php" class="text-white hover:text-gray-300">Login</a>
-                    <a href="register.php" class="text-white hover:text-gray-300">Register</a>
+                    <a href="../login.php" class="text-white hover:text-gray-300">Login</a>
+                    <a href="../register.php" class="text-white hover:text-gray-300">Register</a>
                 </div>
             <?php } ?>
 
@@ -58,20 +58,20 @@ if (isset($_SESSION['userID'])) {
 
             <!-- Mobile Collapsible Menu -->
             <div id="mobileMenu" class="md:hidden absolute top-16 left-0 right-0 bg-blue-500">
-                <a href="#movies" class="block py-2 px-4 text-white hover:bg-blue-600">Movies</a>
-                <a href="#reviews" class="block py-2 px-4 text-white hover:bg-blue-600">Reviews</a>
-                <a href="#favorites" class="block py-2 px-4 text-white hover:bg-blue-600">Favorites</a>
+                <a href="../movies.php" class="block py-2 px-4 text-white hover:bg-blue-600">Movies</a>
+                <a href="../reviews.php" class="block py-2 px-4 text-white hover:bg-blue-600">Reviews</a>
+                <a href="../favorites.php" class="block py-2 px-4 text-white hover:bg-blue-600">Favorites</a>
                 <?php
                 if ($row['type'] == 'admin') { ?>
-                    <a href="dashboard.php" class="block py-2 px-4 text-white hover:bg-blue-600">Dashboard</a>
+                    <a href="../dashboard.php" class="block py-2 px-4 text-white hover:bg-blue-600">Dashboard</a>
                 <?php } ?>
                 <?php
                 if (isset($_SESSION['userID'])) { ?>
-                    <a href="profile.php" class="block py-2 px-4 text-white hover:bg-blue-600"><?php echo $username ?></a>
-                    <a href="logout.php" class="block py-2 px-4 text-white hover:bg-blue-600">Logout</a>
+                    <a href="../profile.php" class="block py-2 px-4 text-white hover:bg-blue-600"><?php echo $username ?></a>
+                    <a href="../logout.php" class="block py-2 px-4 text-white hover:bg-blue-600">Logout</a>
                 <?php } else { ?>
-                    <a href="login.php" class="block py-2 px-4 text-white hover:bg-blue-600">Login</a>
-                    <a href="register.php" class="block py-2 px-4 text-white hover:bg-blue-600">Register</a>
+                    <a href="../login.php" class="block py-2 px-4 text-white hover:bg-blue-600">Login</a>
+                    <a href="../register.php" class="block py-2 px-4 text-white hover:bg-blue-600">Register</a>
                 <?php } ?>
 
 

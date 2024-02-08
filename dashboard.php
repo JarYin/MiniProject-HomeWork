@@ -1,5 +1,16 @@
 <?php include('config.php');
-include('./ui/navbar.php'); ?>
+include('./ui/navbar.php');
+
+$sql = "SELECT id FROM movies";
+$result = mysqli_query($conn, $sql);
+
+// เก็บ ID ทั้งหมดไว้ในตัวแปร
+$lastId = null;
+while ($row = mysqli_fetch_assoc($result)) {
+    $ids[] = $row['id'];
+    $lastId = $row['id']; // เก็บค่า ID ของแถวล่าสุด
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +39,7 @@ include('./ui/navbar.php'); ?>
     .box {
         width: 500px;
         height: 500px;
-        margin-right: 20px; 
+        margin-right: 20px;
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;
@@ -48,19 +59,27 @@ include('./ui/navbar.php'); ?>
             </ul>
         </div>
 
-        <div class="w-4/5 p-6">
-            <h2 class="text-2xl font-bold mb-4">Dashboard Overview</h2>
-            <!-- Your dashboard content goes here -->
-            <div class="flex">
-                <div class="box">
-                    <!-- First box content -->
-                </div>
-                <div class="box">
-                    <!-- Second box content -->
+        <div class="w-4/5 mx-auto bg-white shadow-md rounded-lg">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-4">Dashboard Overview</h2>
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full md:w-1/2 px-4 mb-4">
+                        <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-2">Total Movies</h3>
+                            <p class="text-xl"><?php echo "Total Movies: " . $lastId; ?></p>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 px-4 mb-4">
+                        <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-2">Total Reviews</h3>
+                            <p class="text-xl"><?php echo "Total Reviews: " . $lastId; ?></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="footer">
         <?php include('./ui/footer.php'); ?>

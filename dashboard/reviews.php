@@ -1,5 +1,11 @@
 <?php include('../config.php');
-include('../ui/navbar.php'); ?> ?>
+include('navbar.php'); 
+$sql = "SELECT * FROM reviews";
+$result = mysqli_query($conn, $sql);
+$reviews = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,12 +58,27 @@ include('../ui/navbar.php'); ?> ?>
             <h2 class="text-2xl font-bold mb-4">Dashboard Reviews</h2>
             <!-- Your dashboard content goes here -->
             <div class="flex">
-                <div class="box">
-                    <!-- First box content -->
-                </div>
-                <div class="box">
+
+                <!-- First box content -->
+                <div class="box p-4 w-full" style="overflow: auto;">
                     <!-- Second box content -->
+                    <h2 class="text-lg font-semibold mb-2 text-center">All Reviews</h2>
+                    <ul id="todo-list" class="list-disc pl-5">
+                        <?php
+                        // Loop through todo items and display them
+                        foreach ($reviews as $review) { ?>
+                            <li class='shadow-md p-4 mb-2' style='list-style: none;'>
+                                <h3><?php echo $review['Title'] ?></h3>
+                                <p class="text-gray-500 dark:text-gray-400"><?php echo $review['Genre'] ?></p>
+                                <p class="text-gray-500 dark:text-gray-400">วันที่ออกฉาย <?php echo $review['ReleaseDate'] ?></p>
+                                <a href="edit_movie.php?edit_id=<?php echo $review['id']; ?>" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">Edit</a>
+                                <a href="dashboardDB.php?delete_id=<?php echo $review['id']; ?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-1 rounded">Delete</a>
+                            </li>
+                        <?php }
+                        ?>
+                    </ul>
                 </div>
+
             </div>
         </div>
     </div>
