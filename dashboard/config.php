@@ -4,8 +4,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "movie_db";
-
+$dbname = "moviedb";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
