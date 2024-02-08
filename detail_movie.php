@@ -2,6 +2,8 @@
 include('config.php');
 include('ui/navbar.php');
 
+$reviews = []; // Initialize $reviews variable
+
 if (isset($_SESSION['userID'])) {
     $userID = $_SESSION['userID'];
     $sql = "SELECT * FROM user WHERE id = $userID";
@@ -13,9 +15,9 @@ $sql = "SELECT * FROM movies WHERE id = " . $_GET['movie_id'];
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
-$sql = "SELECT reviews.*, movies.*, users.* 
+$sql = "SELECT reviews.*, movies.*, user.* 
         FROM reviews 
-        INNER JOIN users ON reviews.UserID = users.id 
+        INNER JOIN user ON reviews.UserID = user.id 
         INNER JOIN movies ON reviews.MovieID = movies.id
         WHERE reviews.MovieID = " . $_GET['movie_id'];
 
@@ -59,10 +61,6 @@ if ($result) {
 
     <div class="container mx-auto pt-20">
         <h1 class="text-3xl font-bold mb-4 text-center">Disney Movies</h1>
-        <!-- Add this button in the Movie and Character cards -->
-        <?php if (isset($userID) && $rows['type'] == 'user') { ?>
-            <button class="bg-blue-500 text-white font-bold py-2 mb-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="addToFavorites('${movie.Title}', '${movie.Description}', '${movie.PosterURL}')">Add to Favorites</button>
-        <?php } ?>
 
         <!-- Movie Cards will be displayed here -->
 
@@ -85,6 +83,7 @@ if ($result) {
             </div>
         </div>
 
+        <?php if(isset($_SESSION['userID'])) { ?>
         <div class="bg-gray-100 p-6 rounded-md">
             <!-- Comment Form -->
             <form action="reviewsDB.php" method="POST">
@@ -96,6 +95,7 @@ if ($result) {
                 <button type="submit" name="commentSubmit" class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Post Comment</button>
             </form>
         </div>
+        <?php } ?>
 
         <?php if (isset($_SESSION['success'])) { ?>
             <div>
@@ -106,16 +106,16 @@ if ($result) {
 
         <div class="bg-gray-100 p-4 rounded-md">
             <?php
-            if (!is_null($reviews)) {
+            if (!empty($reviews)) {
                 foreach ($reviews as $review) { ?>
                     <div class="bg-white rounded-md shadow-md p-4 mb-4">
-                        <div class="font-semibold text-lg"><?php echo $review['UserID'] ?> : <span class="text-gray-600"><?php echo $review['Timestamp'] ?></span>
+                        <div class="font-semibold text-lg"><?php echo $review['username'] ?> : <span class="text-gray-600"><?php echo $review['Timestamp'] ?></span>
                         </div>
                         <div class="text-gray-700"><?php echo $review['Comment'] ?></div>
                     </div>
             <?php  }
             } else {
-                echo "No reviews found.";
+                echo "No reviews found." . $conn->error;
             } ?>
 
         </div>

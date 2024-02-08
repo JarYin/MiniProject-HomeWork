@@ -56,3 +56,11 @@ if (isset($_GET['delete_id'])) {
     header('location: movies.php');
 
 }
+
+if(isset($_GET['deleteReview_id'])){
+    $id = $_GET['deleteReview_id'];
+    $sql = "DELETE FROM reviews WHERE id = '$id'";
+    mysqli_query($conn, $sql);
+    $_SESSION['message_movie_upload'] = "Review deleted successfully";
+    header('location: reviews.php');
+}

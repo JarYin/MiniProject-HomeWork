@@ -22,19 +22,19 @@
     </header>
 
     <!-- Featured Movies -->
-    <section id="movies" class="container mx-auto my-12 my-12">
+    <!-- <section id="movies" class="container mx-auto my-12 my-12">
         <h2 class="text-3xl font-bold mb-6">Featured Movies</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"> -->
             <!-- Movie Cards go here -->
-            <div class="bg-white p-4 rounded-lg shadow-md">
+            <!-- <div class="bg-white p-4 rounded-lg shadow-md">
                 <img src="movie1.jpg" alt="Movie 1" class="w-full h-48 object-cover mb-4 rounded">
                 <h3 class="text-xl font-bold mb-2">The Lion King</h3>
                 <p class="text-gray-700">An animated classic about the circle of life.</p>
                 <a href="#" class="mt-4 inline-block text-blue-500">Learn More</a>
-            </div>
+            </div> -->
             <!-- Repeat for other movies -->
-        </div>
-    </section>
+        <!-- </div>
+    </section> -->
 
     <!-- Footer -->
     <?php include('ui/footer.php') ?>

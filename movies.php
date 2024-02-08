@@ -44,11 +44,6 @@ $row = $result->fetch_assoc();
 
     <div class="container mx-auto pt-20">
         <h1 class="text-3xl font-bold mb-4">Disney Movies</h1>
-        <!-- Add this button in the Movie and Character cards -->
-        <?php if (isset($userID) && $rows['type'] == 'user') { ?>
-            <button class="bg-blue-500 text-white font-bold py-2 mb-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="addToFavorites('${movie.Title}', '${movie.Description}', '${movie.PosterURL}')">Add to Favorites</button>
-        <?php } ?>
-
         <div id="moviesList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <!-- Movie Cards will be displayed here -->
             <?php while ($row = $result->fetch_assoc()) { ?>

@@ -1,9 +1,25 @@
 <?php include('../config.php');
-include('navbar.php'); 
-$sql = "SELECT * FROM reviews";
-$result = mysqli_query($conn, $sql);
-$reviews = mysqli_fetch_all($result, MYSQLI_ASSOC);
+include('navbar.php');
+if (isset($_SESSION['userID'])) {
+    $userID = $_SESSION['userID'];
+    $sql = "SELECT * FROM user WHERE id = $userID";
+    $result = mysqli_query($conn, $sql);
+    $rows = mysqli_fetch_assoc($result);
+}
 
+$sql = "SELECT reviews.*, movies.*, user.* 
+        FROM reviews 
+        INNER JOIN user ON reviews.UserID = user.id 
+        INNER JOIN movies ON reviews.MovieID = movies.id
+       ";
+
+$result = $conn->query($sql);
+if ($result) {
+    $reviews = $result->fetch_all(MYSQLI_ASSOC);
+    // Process $reviews data as needed
+} else {
+    echo "Error executing query: " . $conn->error;
+}
 
 ?>
 <!DOCTYPE html>
@@ -63,16 +79,22 @@ $reviews = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <div class="box p-4 w-full" style="overflow: auto;">
                     <!-- Second box content -->
                     <h2 class="text-lg font-semibold mb-2 text-center">All Reviews</h2>
+                    <?php if (isset($_SESSION['message_movie_upload'])) {
+                        echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Success!</strong>
+                        <span class="block sm:inline">' . $_SESSION['message_movie_upload'] . '</span>
+                      </div>';
+                        unset($_SESSION['message_movie_upload']);
+                    } ?>
                     <ul id="todo-list" class="list-disc pl-5">
                         <?php
                         // Loop through todo items and display them
                         foreach ($reviews as $review) { ?>
                             <li class='shadow-md p-4 mb-2' style='list-style: none;'>
-                                <h3><?php echo $review['Title'] ?></h3>
-                                <p class="text-gray-500 dark:text-gray-400"><?php echo $review['Genre'] ?></p>
-                                <p class="text-gray-500 dark:text-gray-400">วันที่ออกฉาย <?php echo $review['ReleaseDate'] ?></p>
-                                <a href="edit_movie.php?edit_id=<?php echo $review['id']; ?>" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">Edit</a>
-                                <a href="dashboardDB.php?delete_id=<?php echo $review['id']; ?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-1 rounded">Delete</a>
+                                <h3 class="mb-2"><?php echo $review['username'] ?> : <?php echo $review['ReleaseDate'] ?></h3>
+                                <p class="mb-2 text-gray-500 dark:text-gray-400"><?php echo $review['Title'] ?></p>
+                                <p class="mb-2 text-gray-500 dark:text-gray-400"><?php echo $review['Comment'] ?></p>
+                                <a href="dashboardDB.php?deleteReview_id=<?php echo $review['id']; ?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-1 rounded">Delete</a>
                             </li>
                         <?php }
                         ?>

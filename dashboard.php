@@ -3,13 +3,11 @@ include('./ui/navbar.php');
 
 $sql = "SELECT id FROM movies";
 $result = mysqli_query($conn, $sql);
+$lastId = mysqli_num_rows($result);
 
-// เก็บ ID ทั้งหมดไว้ในตัวแปร
-$lastId = null;
-while ($row = mysqli_fetch_assoc($result)) {
-    $ids[] = $row['id'];
-    $lastId = $row['id']; // เก็บค่า ID ของแถวล่าสุด
-}
+$sql = "SELECT id FROM reviews";
+$result = mysqli_query($conn, $sql);
+$reviewsId = mysqli_num_rows($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +70,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <div class="w-full md:w-1/2 px-4 mb-4">
                         <div class="bg-gray-100 p-4 rounded-lg shadow-md">
                             <h3 class="text-lg font-semibold mb-2">Total Reviews</h3>
-                            <p class="text-xl"><?php echo "Total Reviews: " . $lastId; ?></p>
+                            <p class="text-xl"><?php echo "Total Reviews: " . $reviewsId; ?></p>
                         </div>
                     </div>
                 </div>

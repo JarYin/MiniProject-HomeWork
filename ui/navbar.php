@@ -29,7 +29,6 @@ if (isset($_SESSION['userID'])) {
             <div class="hidden md:flex space-x-4">
                 <a href="movies.php" class="text-white hover:text-gray-300">Movies</a>
                 <a href="reviews.php" class="text-white hover:text-gray-300">Reviews</a>
-                <a href="favorites.php" class="text-white hover:text-gray-300">Favorites</a>
                 <?php if (isset($userID) && $row['type'] == 'admin') { ?>
                     <a href="dashboard.php" class="text-white hover:text-gray-300">Dashboard</a>
                 <?php } ?>
@@ -60,7 +59,6 @@ if (isset($_SESSION['userID'])) {
             <div id="mobileMenu" class="md:hidden absolute top-16 left-0 right-0 bg-blue-500">
                 <a href="#movies" class="block py-2 px-4 text-white hover:bg-blue-600">Movies</a>
                 <a href="#reviews" class="block py-2 px-4 text-white hover:bg-blue-600">Reviews</a>
-                <a href="#favorites" class="block py-2 px-4 text-white hover:bg-blue-600">Favorites</a>
                 <?php
                 if ($row['type'] == 'admin') { ?>
                     <a href="dashboard.php" class="block py-2 px-4 text-white hover:bg-blue-600">Dashboard</a>

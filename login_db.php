@@ -21,7 +21,8 @@ if (isset($_POST['submit'])) {
         header('Location: index.php');
         exit();
     } else {
-        echo "Invalid email or password";
+        $_SESSION['error'] = "Invalid email or password";
+        header('Location: login.php');
     }
 }
 ?>
